@@ -590,7 +590,7 @@ function build_check_power_domain() {
 
 function build_tool() {
 	test -d ${SDK_SYSDRV_DIR} && make pctools -C ${SDK_SYSDRV_DIR}
-	if [ $LF_ENABLE_SPI_NAND_FAST_BOOT == "y" ]; then
+	if [ "$LF_ENABLE_SPI_NAND_FAST_BOOT" == "y" ]; then
 		cp -fa $PROJECT_TOP_DIR/sfc_scripts/mk-fitimage.sh $RK_PROJECT_PATH_PC_TOOLS
 		cp -fa $PROJECT_TOP_DIR/sfc_scripts/compress_tool $RK_PROJECT_PATH_PC_TOOLS
 		cp -fa $PROJECT_TOP_DIR/sfc_scripts/mk-tftp_sd_update.sh $RK_PROJECT_PATH_PC_TOOLS
