@@ -187,7 +187,7 @@ function mk_ubi_image_fake()
 					UBI_COMPRESSION_TPYE=lzo
 					;;
 			esac
-			echo "$MKUBIFS_TOOL -x $UBI_COMPRESSION_TPYE -e $ubifs_lebsize -m $ubifs_miniosize -c $ubifs_maxlebcnt -d $UBI_SRC_DIR -F -v -o $temp_image" >> $UBI_IMAGE_FAKEROOT
+			echo "$MKUBIFS_TOOL -U -x $UBI_COMPRESSION_TPYE -e $ubifs_lebsize -m $ubifs_miniosize -c $ubifs_maxlebcnt -d $UBI_SRC_DIR -F -v -o $temp_image" >> $UBI_IMAGE_FAKEROOT
 			;;
 	esac
 

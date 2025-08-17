@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TIMEZONE="America/Chicago"
+TIMEZONE=`cat /etc/timezone`
 
 	
 # Update package repositories and system
@@ -54,7 +54,7 @@ rootfsname="$1"
 ownership="$2"
 cd /
 mkdir /my-rootfs/$rootfsname
-#for d in bin etc lib root sbin usr; do tar c "$d" | tar x -C /my-rootfs/pack; done
+
 tar c bin etc lib root sbin usr |tar x -C /my-rootfs/$rootfsname
 for dir in dev proc run sys var; do mkdir /my-rootfs/$rootfsname/${dir}; done
 cd /my-rootfs && tar czf ${rootfsname}.tar $rootfsname

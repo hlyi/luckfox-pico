@@ -862,13 +862,13 @@ function build_rootfs() {
 	check_config RK_BOOT_MEDIUM || return 0
 
 	if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
-		docker run --rm --privileged multiarch/qemu-user-static --reset --persistent yes
+		# docker run --rm --privileged multiarch/qemu-user-static --reset --persistent yes
 		BUILDROOTFS="my-alpine-rootfs"
 		ROOTFSNAME="rootfs_${RK_LIBC_TPYE}_${RK_CHIP}"
 		mkdir -p $BUILDROOTFS
 		cp $SDK_SYSDRV_DIR/tools/board/alpine/firstboot.sh $BUILDROOTFS
 		ugid=`id -u`:`id -g`
-		docker run --platform=linux/arm -it --name armv7alpine  --net=host -v ./$BUILDROOTFS:/my-rootfs arm32v7/alpine:3 /my-rootfs/firstboot.sh $ROOTFSNAME $ugid
+		docker run --platform=linux/arm -it --name armv7alpine  --net=host -v /etc/timezone:/etc/timezone:ro -v ./$BUILDROOTFS:/my-rootfs arm32v7/alpine:3 /my-rootfs/firstboot.sh $ROOTFSNAME $ugid
 		docker rm armv7alpine
 		if [ ! -d $RK_PROJECT_PATH_SYSDRV ]; then
 			mkdir -p $RK_PROJECT_PATH_SYSDRV
