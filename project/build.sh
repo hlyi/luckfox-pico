@@ -161,7 +161,7 @@ function choose_target_board() {
 		"RV1106_Luckfox_Pico_86Panel_W"
 		"RV1106_Luckfox_Pico_Zero")
 	local LF_BOOT_MEDIA=("SD_CARD" "SPI_NAND" "EMMC")
-	local LF_SYSTEM=("Buildroot" "Custom")
+	local LF_SYSTEM=("Buildroot" "Alpine" "Custom")
 	local cnt=0 space8="        "
 
 	# Get Hardware Version
@@ -321,8 +321,13 @@ function choose_target_board() {
 
 	if (("$BM_INDEX" == 1)); then
 		echo "${space8}${space8}[0] Buildroot "
+		if [[ "$HW_INDEX" == 4 ]]; then
+			echo "${space8}${space8}[1] Alpine Linux (Support for the apk package keeper tool)"
+			MAX_SYS_INDEX=1
+		else
+			MAX_SYS_INDEX=0
+		fi
 		read -p "Which would you like? [0][default:0]: " SYS_INDEX
-		MAX_SYS_INDEX=0
 	elif (("$BM_INDEX" == 0)); then
 		echo "${space8}${space8}[0] Buildroot "
 		read -p "Which would you like? [0][default:0]: " SYS_INDEX
@@ -856,7 +861,23 @@ function build_kernel() {
 function build_rootfs() {
 	check_config RK_BOOT_MEDIUM || return 0
 
-	make rootfs -C ${SDK_SYSDRV_DIR}
+	if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
+		docker run --rm --privileged multiarch/qemu-user-static --reset --persistent yes
+		BUILDROOTFS="my-alpine-rootfs"
+		ROOTFSNAME="rootfs_${RK_LIBC_TPYE}_${RK_CHIP}"
+		mkdir -p $BUILDROOTFS
+		cp $SDK_SYSDRV_DIR/tools/board/alpine/firstboot.sh $BUILDROOTFS
+		ugid=`id -u`:`id -g`
+		docker run --platform=linux/arm -it --name armv7alpine  --net=host -v ./$BUILDROOTFS:/my-rootfs arm32v7/alpine:3 /my-rootfs/firstboot.sh $ROOTFSNAME $ugid
+		docker rm armv7alpine
+		if [ ! -d $RK_PROJECT_PATH_SYSDRV ]; then
+			mkdir -p $RK_PROJECT_PATH_SYSDRV
+		fi
+		mv $BUILDROOTFS/rootfs_${RK_LIBC_TPYE}_${RK_CHIP}.tar $RK_PROJECT_PATH_SYSDRV/
+		rm -rf $BUILDROOTFS
+	else
+		make rootfs -C ${SDK_SYSDRV_DIR}
+	fi
 
 	__LINK_DEFCONFIG_FROM_BOARD_CFG
 
@@ -2523,8 +2544,8 @@ function build_firmware() {
 		rm -rf $RK_PROJECT_PACKAGE_OEM_DIR
 	fi
 
-	__RUN_POST_BUILD_SCRIPT
 	post_overlay
+	__RUN_POST_BUILD_SCRIPT
 
 	if [ -n "$GLOBAL_INITRAMFS_BOOT_NAME" ]; then
 		build_mkimg boot $RK_PROJECT_PACKAGE_ROOTFS_DIR
