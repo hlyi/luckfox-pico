@@ -1,8 +1,8 @@
 #!/bin/sh
 
-TIMEZONE=`cat /etc/timezone`
+WORKDIR="/my-rootfs"
+TIMEZONE=`cat $WORKDIR/timezone`
 
-	
 # Update package repositories and system
 apk update
 
@@ -12,10 +12,11 @@ rc-update add devfs boot
 rc-update add procfs boot
 rc-update add sysfs boot
 rc-update add ubiattach boot
-chmod a+x /etc/local.d/crond.start
+#chmod a+x /etc/local.d/crond.start
 rc-update add local default
 rc-update add networking default
 
+apk add eudev
 
 # Configure timezone
 apk add tzdata && \
@@ -39,7 +40,7 @@ rc-update add sshd default
 
 # Install additional utilities
 apk add util-linux dialog dtc i2c-tools mtd-utils
-apk add btop ncurses ncurses-terminfo-base 
+apk add btop ncurses ncurses-terminfo-base
 # apk add musl-locales
 apk add sqlite
 # apk add python3 py3-pip py3-smbus
@@ -53,11 +54,12 @@ sed -i 's/need sysfs dev/need sysfs/' /etc/init.d/machine-id
 rootfsname="$1"
 ownership="$2"
 cd /
-mkdir /my-rootfs/$rootfsname
+mkdir $WORKDIR/$rootfsname
 
-tar c bin etc lib root sbin usr |tar x -C /my-rootfs/$rootfsname
-for dir in dev proc run sys var; do mkdir /my-rootfs/$rootfsname/${dir}; done
-cd /my-rootfs && tar czf ${rootfsname}.tar $rootfsname
+tar -c bin etc lib root sbin usr |tar x -C $WORKDIR/$rootfsname
+cd $WORKDIR/$rootfsname && mkdir dev proc run sys var
+cd $WORKDIR && tar -czf ${rootfsname}.tar $rootfsname
 rm -rf $rootfsname
 chown $ownership ${rootfsname}.tar
+
 exit 0
