@@ -4,9 +4,9 @@
 /dev/mmcblk1p1  /mnt/sd         auto    defaults 0 0
 
 # UBI and storage volumes
-ubi0:rootfs     /               ubifs   rw,relatime 0 0
+ubi0:rootfs     /               ubifs   rw,noatime 0 0
 ubi1:userdata   /userdata       ubifs   rw,noatime 0 0
-ubi2:oem        /oem            ubifs   rw,noatime 0 0
+# ubi2:oem        /oem            ubifs   rw,noatime 0 0
 
 # System mounts
 devtmpfs        /dev            devtmpfs rw,nosuid,noexec,mode=755 0 0

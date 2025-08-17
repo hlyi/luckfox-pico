@@ -81,6 +81,8 @@ OTA_SCRIPT_PATH=$RK_PROJECT_PATH_RAMDISK
 ENV_CFG_FILE=$RK_PROJECT_OUTPUT_IMAGE/.env.txt
 ENV_SIZE=""
 ENV_OFFSET=""
+MACADDRFILE="$SDK_ROOT_DIR/.macaddr"
+MACADDR=""
 
 ################################################################################
 # Public Configure
@@ -382,6 +384,12 @@ function build_select_board() {
 	ln -rfs $TARGET_PRODUCT_DIR/$RK_BUILD_TARGET_BOARD $BOARD_CONFIG
 	#cp $TARGET_PRODUCT_DIR/$RK_BUILD_TARGET_BOARD $BOARD_CONFIG
 	msg_info "switching to board: $(realpath $BOARD_CONFIG)"
+
+	if [ ! -f $MACADDRFILE ]; then
+		echo $(printf '%02x' $((0x$(od /dev/urandom -N1 -t x1 -An | cut -c 2-) & 0xFE | 0x02)); od /dev/urandom -N5 -t x1 -An | sed 's/ /:/g') > $MACADDRFILE
+	fi
+	MACADDR=$(cat $MACADDRFILE)
+	msg_info "Ethernet address is $MACADDR"
 
 	if [ "$1" = "LUNCH-FORCE" ]; then
 		finish_build
@@ -779,6 +787,12 @@ function build_env() {
 
 	echo "$SYS_BOOTARGS" >>$ENV_CFG_FILE
 	echo "sd_parts=mmcblk0:16K@512(env),512K@32K(idblock),4M(uboot)" >>$ENV_CFG_FILE
+	if [ -f $MACADDRFILE ]; then
+		MACADDR=$(cat $MACADDRFILE)
+	fi
+	if [ "$MACADDR" != "" ]; then
+		echo "ethaddr=$MACADDR" >>$ENV_CFG_FILE
+	fi
 	# build env.img
 	$RK_PROJECT_PATH_PC_TOOLS/mkenvimage -s $ENV_SIZE -p 0x0 -o $env_cfg_img $ENV_CFG_FILE
 	chmod +r $env_cfg_img
