@@ -881,9 +881,9 @@ function build_rootfs() {
 		ROOTFSNAME="rootfs_${RK_LIBC_TPYE}_${RK_CHIP}"
 		mkdir -p $BUILDROOTFS
 		cp /etc/timezone $BUILDROOTFS
-		cp $SDK_SYSDRV_DIR/tools/board/alpine/firstboot.sh $BUILDROOTFS
+		cp $SDK_SYSDRV_DIR/tools/board/alpine/build_rootfs.sh $BUILDROOTFS
 		ugid=`id -u`:`id -g`
-		docker run --platform=linux/arm -it --name armv7alpine  --net=host -v ./$BUILDROOTFS:/my-rootfs arm32v7/alpine:3 /my-rootfs/firstboot.sh $ROOTFSNAME $ugid
+		docker run --platform=linux/arm -it --name armv7alpine  --net=host -v ./$BUILDROOTFS:/my-rootfs arm32v7/alpine:3 /my-rootfs/build_rootfs.sh $ROOTFSNAME $ugid
 		docker rm armv7alpine
 		if [ ! -d $RK_PROJECT_PATH_SYSDRV ]; then
 			mkdir -p $RK_PROJECT_PATH_SYSDRV
