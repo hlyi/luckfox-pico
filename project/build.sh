@@ -2596,9 +2596,13 @@ function build_firmware() {
 		if [ "${RK_ENABLE_FASTBOOT}" = "y" ]; then
 			files="${RK_PROJECT_OUTPUT_IMAGE}/userdata.img"
 		else
-			files=("${RK_PROJECT_OUTPUT_IMAGE}/oem.img"
-				"${RK_PROJECT_OUTPUT_IMAGE}/rootfs.img"
-				"${RK_PROJECT_OUTPUT_IMAGE}/userdata.img")
+			if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
+				files="${RK_PROJECT_OUTPUT_IMAGE}/rootfs.img"
+			else
+				files=("${RK_PROJECT_OUTPUT_IMAGE}/oem.img"
+					"${RK_PROJECT_OUTPUT_IMAGE}/rootfs.img"
+					"${RK_PROJECT_OUTPUT_IMAGE}/userdata.img")
+			fi
 		fi
 
 		for file in "${files[@]}"; do
