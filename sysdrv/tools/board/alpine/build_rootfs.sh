@@ -47,6 +47,9 @@ apk add sqlite
 # apk add gcc musl-dev build-base gcompat linux-headers
 # apk add speedtest-cli
 
+# generate ssh key
+/etc/init.d/sshd checkconfig
+
 # Remove dev dependency
 sed -i 's/need sysfs dev/need sysfs/' /etc/init.d/hwdrivers
 sed -i 's/need sysfs dev/need sysfs/' /etc/init.d/machine-id
