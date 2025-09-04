@@ -2142,7 +2142,11 @@ function __GET_TARGET_PARTITION_FS_TYPE() {
 					SYS_BOOTARGS="$SYS_BOOTARGS ubi.block=0,$GLOBAL_ROOT_FILESYSTEM_NAME root=/dev/ubiblock0_0 rootfstype=$part_fs_type"
 					;;
 				ubifs)
-					SYS_BOOTARGS="$SYS_BOOTARGS root=ubi0:$GLOBAL_ROOT_FILESYSTEM_NAME rootfstype=$part_fs_type"
+					if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
+						SYS_BOOTARGS="$SYS_BOOTARGS root=/dev/ram0 console=ttyFIQ0 rootdev=ubi0:$GLOBAL_ROOT_FILESYSTEM_NAME rootfstype=$part_fs_type"
+					else
+						SYS_BOOTARGS="$SYS_BOOTARGS root=ubi0:$GLOBAL_ROOT_FILESYSTEM_NAME rootfstype=$part_fs_type"
+					fi
 					;;
 				*)
 					msg_error "Not support rootfs type: $part_fs_type"
@@ -2169,7 +2173,7 @@ function __GET_TARGET_PARTITION_FS_TYPE() {
 			echo "mount_part $part_name $part_mountpoint $part_fs_type ;" >>$RK_PROJECT_FILE_RECOVERY_SCRIPT
 		fi
 
-		__MAKE_MOUNT_SCRIPT "mount_part $part_name $part_mountpoint $part_fs_type ;"
+		__MAKE_MOUNT_SCRIPT "mount_part $part_n $part_fs_type ;"
 	done
 	IFS=
 
@@ -2224,6 +2228,9 @@ function __PREPARE_BOARD_CFG() {
 	if [ "$RK_ENABLE_FASTBOOT" = "y" ]; then
 		SYS_BOOTARGS="$SYS_BOOTARGS $RK_PARTITION_ARGS"
 	fi
+#	if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
+#		SYS_BOOTARGS="$SYS_BOOTARGS overlaytmpfs=yes"
+#	fi
 	__GET_BOOTARGS_FROM_BOARD_CFG
 
 	export RK_KERNEL_CMDLINE_FRAGMENT=${SYS_BOOTARGS#sys_bootargs=}
