@@ -60,6 +60,7 @@ export RK_PROJECT_OUTPUT_IMAGE=$SDK_ROOT_DIR/output/image
 export RK_PROJECT_PATH_RAMDISK=$SDK_ROOT_DIR/output/out/ramdisk
 export RK_PROJECT_PATH_FASTBOOT=$SDK_ROOT_DIR/output/out/fastboot
 export RK_PROJECT_PATH_RAMDISK_TINY_ROOTFS=$RK_PROJECT_PATH_RAMDISK/tiny_rootfs
+export RK_PROJECT_PATH_RAMDISK_ALPINE_INITBOOT=$SDK_ROOT_DIR/output/out/custom_alpine_initramfs
 
 export PATH=$RK_PROJECT_PATH_PC_TOOLS:$PATH
 
@@ -862,6 +863,12 @@ function build_kernel() {
 	if [ "$RK_ENABLE_FASTBOOT" = "y" ]; then
 		kernel_build_options="OUTPUT_SYSDRV_RAMDISK_DIR=$RK_PROJECT_PATH_FASTBOOT"
 		mkdir -p $RK_PROJECT_PATH_FASTBOOT
+	fi
+	if [ "$LF_TARGET_ROOTFS" = "alpine" ]; then
+		echo tar -axf $SDK_SYSDRV_DIR/tools/board/alpine/custom_alpine_initramfs.tgz  -C $RK_PROJECT_PATH_RAMDISK_ALPINE_INITBOOT
+		rm -rf $RK_PROJECT_PATH_RAMDISK_ALPINE_INITBOOT
+		mkdir -p $RK_PROJECT_PATH_RAMDISK_ALPINE_INITBOOT
+		tar -axf $SDK_SYSDRV_DIR/tools/board/alpine/custom_alpine_initramfs.tgz  -C $RK_PROJECT_PATH_RAMDISK_ALPINE_INITBOOT
 	fi
 	make kernel -C ${SDK_SYSDRV_DIR} \
 		$kernel_build_options \
