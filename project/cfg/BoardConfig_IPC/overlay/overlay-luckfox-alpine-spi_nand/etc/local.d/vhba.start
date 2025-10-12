@@ -1,0 +1,3 @@
+#!/bin/sh
+
+insmod /lib/modules/vhba.ko
