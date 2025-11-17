@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#insmod /lib/modules/vhba.ko
+insmod vhba.ko

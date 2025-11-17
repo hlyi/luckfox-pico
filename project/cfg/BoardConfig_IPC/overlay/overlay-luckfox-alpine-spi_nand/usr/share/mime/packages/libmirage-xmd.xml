@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-xmd">
+        <sub-class-of type="application/octet-stream"/>
+
+        <comment>GameJack image file (*.xmd)</comment>
+        <comment xml:lang="ru">Образ GameJack (*.xmd)</comment>
+        <comment xml:lang="sl">GameJack odtis diska</comment>
+
+        <glob pattern="*.xmd"/>
+
+        <magic priority="80">
+             <match value="MEDIA DESCRIPTOR\x01" type="string" offset="0"/>
+        </magic>
+    </mime-type>
+</mime-info>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-xcdroast">
+        <sub-class-of type="text/plain"/>
+
+        <comment>X-CD Roast image file</comment>
+        <comment xml:lang="ru">Образ X-CD-Roast</comment>
+        <comment xml:lang="sl">X-CD-Roast odtis diska</comment>
+
+        <glob pattern="*.toc"/>
+
+        <magic priority="80">
+            <match value="#\n# X-CD-Roast" type="string" offset="0:13"/>
+        </magic>
+    </mime-type>
+</mime-info>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-cif">
+        <sub-class-of type="application/octet-stream"/>
+
+        <comment>Adaptec Easy CD/DVD Creator image file</comment>
+        <comment xml:lang="ru">Образ Adaptec Easy CD/DVD Creator</comment>
+        <comment xml:lang="sl">Adaptec Easy CD/DVD Creator odtis diska</comment>
+
+        <glob pattern="*.cif"/>
+        <magic priority="60">
+            <match value="RIFF\0\0\0\0imag" type="string" offset="0" mask="0xffffffff00000000ffffffff"/>
+        </magic>
+    </mime-type>
+</mime-info>

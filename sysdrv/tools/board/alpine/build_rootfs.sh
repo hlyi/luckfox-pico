@@ -47,6 +47,12 @@ apk add sqlite
 # apk add gcc musl-dev build-base gcompat linux-headers
 # apk add speedtest-cli
 
+# for cdemu
+apk add glib lame libao libblkid libbz2 libeconf libffi libflac libgcc libintl libmount libogg libsamplerate libsndfile libvorbis mpg123 musl opus pcre2 xz zlib
+apk add dbus
+rc-update add dbus
+apk add samba-client
+
 # generate ssh key
 /etc/init.d/sshd checkconfig
 

@@ -1,0 +1,76 @@
+Installation Instructions
+*************************
+
+Copyright (C) 2008-2016 The CDEMU Project.
+
+This file is free documentation; the CDEmu project gives
+unlimited permission to copy, distribute and modify it.
+
+Basic Installation
+==================
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code.
+
+  2. Type `make' to compile the package.
+
+  4. Type `make install' to install the kernel module and other files.
+     (Needs root permission)
+
+  5. You can remove the program binaries and object files from the
+     source code directory by typing `make clean'.
+
+To properly set permissions on VHBA control device and/or set up module
+auto-load, see the corresponding sections below.
+
+Compilers and Options
+=====================
+
+You can explicitly specify the kernel for which to compile the module for
+by setting the environment variable KERNELRELEASE. The default if it is not
+specified is 'uname -r' in other words your running kernel.
+
+It is also possible to set extra compiler flags through the EXTRA_CFLAGS
+environment variable.
+
+Setting Permissions on VHBA Control Device
+==========================================
+
+In order to use VHBA control device, a user must have read-write permissions
+on /dev/vhba_ctl. Typically, this is achieved by using udev's "uaccess" tag,
+by creating the following rule:
+
+KERNEL=="vhba_ctl", SUBSYSTEM=="misc", TAG+="uaccess"
+
+The rule should be stored in a .rule file in either /lib/udev/rules.d or
+/etc/udev/rules.d directory. For the "uaccess" tag to be applied properly,
+the rule must be executed before the uaccess rule. Therefore, if the uaccess
+rule is contained by /lib/udev/rules.d/70-uaccess.rules, the rule above
+must be stored in a file with number smaller than 70.
+
+
+The alternative and now obsolete approach is to create a udev rule that
+explicitly sets the read/write permissions on the control device:
+
+KERNEL=="vhba_ctl", MODE="0660", OWNER="root", GROUP="cdrom"
+
+The rule should be stored in a .rule file (for example, 40-vhba.rules) in either
+/lib/udev/rules.d or /etc/udev/rules.d directory.
+
+In the above example, the user needs to be part of 'cdrom' group.
+
+Automatic Module Loading
+========================
+
+Automatic module loading can be enabled in a distribution-specific way.
+
+On Linux distributions which use SystemD, such as Fedora, Debian and most others,
+the procedure is as follows:
+
+1. Enter the directory '/etc/modules-load.d/'.
+2. Create a file called 'vhba.conf' containing the line 'vhba'.
+
+On Linux distributions which does not use SystemD, you can append the line 'vhba' to the
+file '/etc/modules'.
+

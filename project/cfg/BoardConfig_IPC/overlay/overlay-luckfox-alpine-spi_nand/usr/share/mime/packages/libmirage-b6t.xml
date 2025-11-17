@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-b6t">
+        <sub-class-of type="application/octet-stream"/>
+
+        <comment>BlindWrite 5/6 image file</comment>
+        <comment xml:lang="ru">Образ BlindWrite 5/6</comment>
+        <comment xml:lang="sl">BlindWrite 5/6 odtis diska</comment>
+
+        <glob pattern="*.b5t"/>
+        <glob pattern="*.b6t"/>
+
+        <magic priority="80">
+            <match value="BWT5 STREAM SIGN" type="string" offset="0"/>
+        </magic>
+    </mime-type>
+</mime-info>

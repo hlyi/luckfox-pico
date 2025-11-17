@@ -8,7 +8,7 @@ export LF_ORIGIN_BOARD_CONFIG=BoardConfig-SPI_NAND-Alpine-RV1106_Luckfox_Pico_Pr
 export RK_CHIP=rv1106
 
 # app config
-#export RK_APP_TYPE=RKIPC_RV1106
+export RK_APP_TYPE=RKIPC_RV1106
 
 # Config CMA size in environment
 export RK_BOOTARGS_CMA_SIZE="1M"
@@ -103,6 +103,8 @@ export RK_CAMERA_SENSOR_CAC_BIN="CAC_sc4336_OT01_40IRC_F16"
 
 # build ipc web backend
 #export RK_APP_IPCWEB_BACKEND=y
+
+export RK_APP_CDEMU=y
 
 # enable install app to oem partition
 export RK_BUILD_APP_TO_OEM_PARTITION=y

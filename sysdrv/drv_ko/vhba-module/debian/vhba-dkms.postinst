@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+mywarning ()
+{
+	echo "WARNING: $1" >&2
+}
+
+if [ "$1" = "configure" ]; then
+		# try to load the module
+		if test -d "/sys/module/vhba"; then
+			mywarning "Reboot required to load new vhba module."
+
+		else
+		    modprobe "vhba" || mywarning "Unable to load module."
+        fi
+fi

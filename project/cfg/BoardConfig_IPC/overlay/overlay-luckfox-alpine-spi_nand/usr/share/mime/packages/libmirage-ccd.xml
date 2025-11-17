@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-ccd">
+        <sub-class-of type="text/plain"/>
+
+        <comment>CloneCD image file</comment>
+        <comment xml:lang="ru">Образ CloneCD</comment>
+        <comment xml:lang="sl">CloneCD odtis diska</comment>
+
+        <glob pattern="*.ccd"/>
+
+        <magic priority="80">
+            <match value="[CloneCD]" type="string" offset="0:10"/>
+        </magic>
+    </mime-type>
+</mime-info>

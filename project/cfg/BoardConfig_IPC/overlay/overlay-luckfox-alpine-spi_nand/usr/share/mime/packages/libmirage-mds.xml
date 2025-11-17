@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-mds">
+        <sub-class-of type="application/octet-stream"/>
+
+        <comment>Alcohol 120% image file (*.mds)</comment>
+        <comment xml:lang="ru">Образ Alchohol 120% (*.mds)</comment>
+        <comment xml:lang="sl">Alchohol 120% odtis diska</comment>
+
+        <glob pattern="*.mds"/>
+
+        <magic priority="80">
+             <match value="MEDIA DESCRIPTOR\x01" type="string" offset="0"/>
+        </magic>
+    </mime-type>
+</mime-info>

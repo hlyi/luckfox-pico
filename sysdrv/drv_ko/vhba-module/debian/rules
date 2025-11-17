@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+#export DH_VERBOSE=1
+
+include /usr/share/dpkg/pkg-info.mk
+
+execute_after_dh_install:
+	dh_install -pvhba-dkms Makefile *.c usr/src/vhba-$(DEB_VERSION_UPSTREAM)/
+
+%:
+	dh $@ --buildsystem=none

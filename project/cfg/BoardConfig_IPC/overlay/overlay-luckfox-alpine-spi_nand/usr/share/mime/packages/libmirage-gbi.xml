@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-gbi">
+        <sub-class-of type="application/octet-stream"/>
+
+        <comment>gBurner image file</comment>
+        <comment xml:lang="ru">Образ gBurner</comment>
+        <comment xml:lang="sl">gBurner odtis diska</comment>
+
+        <glob pattern="*.gbi"/>
+
+        <magic priority="50">
+            <match value="GBI" type="string" offset="0"/>
+        </magic>
+    </mime-type>
+</mime-info>
